@@ -1,17 +1,42 @@
 
 import FoodCard from '../foodCard/FoodCard';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-const ItemTabs = ({items}) => {
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination'
+
+const ItemTabs = ({ items }) => {
+    const pagination = {
+        clickable: true,
+        renderBullet: function (index, className) {
+            return '<span class="' + className + '">' + (index + 1) + '</span>';
+        },
+    };
+
     return (
-        <div className='grid md:grid-cols-3 gap-10 mt-10'>
-                        {
+        <div >
+
+            <>
+                <Swiper
+                    pagination={pagination}
+                    modules={[Pagination]}
+                    className="mySwiper"
+                >
+                    <SwiperSlide>
+                        <div className='grid md:grid-cols-3 gap-10 mt-10'> {
                             items.map(item => <FoodCard
                                 key={item._id}
                                 item={item}
 
                             ></FoodCard>)
-                        }
-                    </div>
+                        }</div>
+
+                    </SwiperSlide>
+
+                </Swiper>
+            </>
+        </div>
     );
 };
 
