@@ -1,22 +1,35 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
-import { AuthContext } from '../../provider/AuthProvider';
 import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import UseAuth from '../../hooks/UseAuth';
 
 const LogIn = () => {
-
-    const refCaptcha = useRef(null);
     const [disabled, setDisabled] = useState(true);
 
-    const { loginUser } = useContext(AuthContext);
+    const { loginUser } = UseAuth();
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const from = location.state?.from?.pathName || '/';
+    console.log('vai ekhne location dekh',location.state)
 
 
 
     useEffect(() => {
         loadCaptchaEnginge(6);
-    }, [])
+    }, []);
+
+
+    const handleValidate = (e) => {
+        const value = e.target.value;
+        console.log(value)
+        if (validateCaptcha(value) == true) {
+            toast.success('Captcha validated successfully')
+            setDisabled(false)
+        }
+    }
 
 
     const handleLogin = (e) => {
@@ -25,8 +38,9 @@ const LogIn = () => {
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
-        const loginUser = { email, password }
-        console.log(loginUser)
+        const loggdinUser = { email, password }
+        console.log(loggdinUser)
+
 
         //log in user with Firebase
         loginUser(email, password)
@@ -34,6 +48,8 @@ const LogIn = () => {
                 const user = res.user;
                 console.log(user)
                 toast.success('Logged in successfully')
+
+                navigate(from, { replace: true })
             })
             .catch(err => {
                 console.log(err.message)
@@ -42,13 +58,7 @@ const LogIn = () => {
 
     }
 
-    const handleValidate = () => {
-        const value = refCaptcha.current.value;
-        console.log(value)
-        if (validateCaptcha(value) == true) {
-            setDisabled(false)
-        }
-    }
+
 
     return (
         <><Helmet>
@@ -91,9 +101,9 @@ const LogIn = () => {
                                     <LoadCanvasTemplate />
                                 </label>
 
-                                <input type="text" ref={refCaptcha} name="captcha" placeholder="type captcha here" className="input input-bordered" />
+                                <input onBlur={handleValidate} type="text" name="captcha" placeholder="type captcha here" className="input input-bordered" />
 
-                                <button onClick={handleValidate} className='btn btn-xs mt-2'>validate</button>
+
                             </div>
 
 

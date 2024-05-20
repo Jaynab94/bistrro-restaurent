@@ -1,9 +1,25 @@
 import { NavLink } from "react-router-dom";
 
+import toast from "react-hot-toast";
+import { FaCartPlus } from "react-icons/fa";
+import UseAuth from "../../../hooks/UseAuth";
 
 const Navbar = () => {
+    const { user, logoutUser } = UseAuth();
+    console.log(user)
 
-   
+    const handleLogout = () => {
+        logoutUser()
+            .then(() => {
+                toast.success('Logged out successfully')
+            })
+            .catch(err => {
+                toast.error(err.message)
+            })
+
+    }
+
+
     const navOpions = <>
 
 
@@ -12,7 +28,20 @@ const Navbar = () => {
         <NavLink><li><a href="">DASHBOARD</a></li></NavLink>
         <NavLink to={'/menu'}><li><a href="">Our Menu</a></li></NavLink>
         <NavLink to={'/shop/salad'}><li><a href="">Our Shop</a></li></NavLink>
-        <NavLink to={'/login'}><li><a href="">Log in</a></li></NavLink>
+        <NavLink to={'/secret'}><li><a href="">secret</a></li></NavLink>
+        <NavLink to={'/'}><li><a href="">
+            <button className="btn">
+                <FaCartPlus className="text-2xl" />
+                <div className="badge badge-secondary">+0</div>
+            </button>
+
+        </a></li></NavLink>
+
+
+        {
+            user ? <button onClick={handleLogout} className="btn btn-ghost"><li><a href="">Log out</a></li></button> :
+                <NavLink to={'/login'}><li><a href="">Log in</a></li></NavLink>
+        }
 
 
     </>
