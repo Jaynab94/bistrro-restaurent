@@ -3,8 +3,11 @@ import { NavLink } from "react-router-dom";
 import toast from "react-hot-toast";
 import { FaCartPlus } from "react-icons/fa";
 import UseAuth from "../../../hooks/UseAuth";
+import useCarts from "../../../hooks/useCarts";
 
 const Navbar = () => {
+    const [cart] = useCarts();
+    console.log(cart)
     const { user, logoutUser } = UseAuth();
     console.log(user)
 
@@ -29,10 +32,10 @@ const Navbar = () => {
         <NavLink to={'/menu'}><li><a href="">Our Menu</a></li></NavLink>
         <NavLink to={'/shop/salad'}><li><a href="">Our Shop</a></li></NavLink>
         <NavLink to={'/secret'}><li><a href="">secret</a></li></NavLink>
-        <NavLink to={'/'}><li><a href="">
+        <NavLink to='/dashboard/cart'><li><a href="">
             <button className="btn">
                 <FaCartPlus className="text-2xl" />
-                <div className="badge badge-secondary">+0</div>
+                <div className="badge badge-secondary">+{cart.length}</div>
             </button>
 
         </a></li></NavLink>

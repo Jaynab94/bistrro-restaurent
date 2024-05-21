@@ -2,17 +2,22 @@ import propTypes from "prop-types"
 import UseAuth from "../../hooks/UseAuth";
 import Swal from "sweetalert2";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-import toast from "react-hot-toast";
+import UseAxiosSecure from "../../hooks/UseAxiosSecure";
+import useCarts from "../../hooks/useCarts";
+
+
+
 
 const FoodCard = ({ item }) => {
+
     const { name, recipe, image, price, _id } = item;
     const navigate = useNavigate();
     const location = useLocation();
     const { user } = UseAuth();
+    const axiosSecure = UseAxiosSecure();
+    const [, refetch] = useCarts()
 
-    const handleAddCart = (food) => {
-        console.log(food)
+    const handleAddCart = () => {
         if (user && user?.email) {
             //send data to the server
 
@@ -26,11 +31,11 @@ const FoodCard = ({ item }) => {
 
             }
 
-            axios.post('http://localhost:5000/carts', menuItem)
+            axiosSecure.post('/carts', menuItem)
                 .then(res => {
                     console.log(res.data)
                     if (res.data.insertedId) {
-                        
+
                         Swal.fire({
                             position: "center",
                             icon: "success",
@@ -38,6 +43,9 @@ const FoodCard = ({ item }) => {
                             showConfirmButton: false,
                             timer: 3000
                         });
+
+                        //refetch carts to update carts
+                        refetch();
                     }
                 })
 
@@ -79,7 +87,7 @@ const FoodCard = ({ item }) => {
                 <p className="text-center">{recipe}</p>
                 <div className="absolute top-6 text-lg right-10 text-white font-bold bg-black px-4">$ {price}</div>
                 <div className="card-actions justify-center">
-                    <button onClick={() => handleAddCart(item)}
+                    <button onClick={ handleAddCart}
                         className="btn text-[#BB8506] mt-2 border-b-[#BB8506] border-b-2 ">ADD TO CART</button>
 
 
