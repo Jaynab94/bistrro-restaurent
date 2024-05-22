@@ -5,11 +5,15 @@ import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import toast from "react-hot-toast";
 import UseAuth from "../../hooks/UseAuth";
+import useAxiosCommon from "../../hooks/useAxiosCommon";
+import Swal from "sweetalert2";
+import SocialLogin from "../../components/socialLogin/SocialLogin";
 
 
 
 
 const Register = () => {
+    const axiosCommon = useAxiosCommon();
     const { createUser, updateUserProfile } = UseAuth();
     const navigate = useNavigate();
 
@@ -31,16 +35,31 @@ const Register = () => {
                 const user = res.user;
                 updateUserProfile(data.name, data.photo)
                     .then(res => {
-                        console.log(res)
-                        toast.success('User created successfully')
-                        reset();
-                        navigate('/')
+                        //add user info to database
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email
+
+                        }
+
+                        axiosCommon.post('/users', userInfo)
+
+                            .then(res => {
+
+                                if (res.data.insertedId) {
+
+                                    toast.success("User Created Successfully")
+
+                                    navigate('/')
+                                }
+                            })
+
                     })
                     .catch(err => {
                         console.log(err.message)
                     })
 
-                console.log(user)
+
 
 
             })
@@ -149,15 +168,10 @@ const Register = () => {
 
                             <p className="mt-2 font-semibold text-center">Or sign up with</p>
 
-                            <div className="flex gap-4 justify-center items-center">
-                                <FaFacebookF className="text-4xl border-2 rounded-full py-2 border-black" />
-                                <FaGithub className="text-4xl border-2 rounded-full py-2 border-black" />
-                                <FaGoogle className="text-4xl border-2 rounded-full py-2 border-black" />
 
-
-
-                            </div>
                         </form>
+                     <div className="p-4">   <SocialLogin></SocialLogin></div>
+                     
                     </div>
                 </div>
             </div>

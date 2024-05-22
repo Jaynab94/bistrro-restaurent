@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import UseAuth from '../../hooks/UseAuth';
+import SocialLogin from '../../components/socialLogin/SocialLogin';
 
 const LogIn = () => {
     const [disabled, setDisabled] = useState(true);
@@ -13,7 +14,7 @@ const LogIn = () => {
     const navigate = useNavigate();
 
     const from = location.state?.from?.pathName || '/';
-    console.log('vai ekhne location dekh',location.state)
+    console.log('vai ekhne location dekh', location.state)
 
 
 
@@ -57,6 +58,7 @@ const LogIn = () => {
             })
 
     }
+    
 
 
 
@@ -110,8 +112,11 @@ const LogIn = () => {
                             <div className="form-control mt-6">
                                 <input disabled={disabled} className="btn btn-primary" type="submit" value="Login" />
                             </div>
-                            <p className='text-orange-400 font-semibold'>New here? <Link className='text-orange-400 font-semibold' to={'/register'}>Create a New Account</Link></p>
+
                         </form>
+                        
+                        <SocialLogin></SocialLogin>
+                        <p className='text-orange-400 mb-4 font-semibold text-center'>New here? <Link className='text-orange-400 font-semibold ' to={'/register'}>Create a New Account</Link></p>
                     </div>
                 </div>
             </div>
