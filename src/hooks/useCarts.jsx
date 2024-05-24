@@ -18,7 +18,7 @@ const useCarts = () => {
 
         queryFn: async () => {
             const res = await axiosSecure.get(`/carts?email=${user?.email}`)
-            console.log(res.data)
+            // console.log(res.data)
             return res.data
 
         }

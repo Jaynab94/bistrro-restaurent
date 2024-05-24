@@ -8,6 +8,23 @@ const axiosSecure = axios.create({
 
 const UseAxiosSecure = () => {
 
+    // Add a request interceptor
+    axiosSecure.interceptors.request.use(function (config) {
+
+
+        const token = localStorage.getItem('access-token');
+        console.log('user stop here', token)
+        config.headers.authorization = `Bearer ${token}`
+
+        return config;
+    }, function (error) {
+
+        return Promise.reject(error);
+    });
+
+
+
+
     return axiosSecure;
 };
 
