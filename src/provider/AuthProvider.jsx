@@ -82,7 +82,7 @@ const AuthProvider = ({ children }) => {
         return () => {
             return unsubscribe()
         }
-    }, [])
+    }, [axiosCommon])
 
 
     const authInfo = {
