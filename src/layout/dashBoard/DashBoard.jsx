@@ -3,11 +3,13 @@ import { IoFastFood } from "react-icons/io5";
 
 import { NavLink, Outlet } from "react-router-dom";
 import useCarts from "../../hooks/useCarts";
+import useAdmin from "../../hooks/useAdmin";
 
 
 const DashBoard = () => {
     const [cart] = useCarts();
-    const isAdmin = true;
+    const [isAdmin] = useAdmin();
+    console.log(isAdmin)
     return (
         <div className="flex">
             {/* sidebar */}

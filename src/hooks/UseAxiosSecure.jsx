@@ -32,7 +32,8 @@ const UseAxiosSecure = () => {
         return response;
         // Do something with response data
     }, async (error) => {
-        console.log('errror by', error);
+        
+        console.log('errror by interceptor', error);
 
         const status = error.response.status;
 
