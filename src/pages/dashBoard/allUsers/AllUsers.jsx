@@ -58,12 +58,13 @@ const AllUsers = () => {
             .then(res => {
                 console.log(res.data)
                 if (res.data.modifiedCount) {
+                    refetch();
                     Swal.fire({
                         title: `{user.name } is now an admin!`,
                         text: "Your change have been updated.",
                         icon: "success"
                     });
-                    refetch();
+
                 }
             })
 
