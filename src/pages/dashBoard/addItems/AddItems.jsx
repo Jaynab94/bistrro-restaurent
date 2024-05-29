@@ -1,11 +1,47 @@
 import { useForm } from "react-hook-form";
 import SectionTitle from "../../../components/SectionTitle";
 import { FaUtensils } from "react-icons/fa";
+import useAxiosCommon from "../../../hooks/useAxiosCommon";
+import UseAxiosSecure from "../../../hooks/UseAxiosSecure";
+import toast from "react-hot-toast";
+
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`
 
 const AddItems = () => {
-    const { register, handleSubmit } = useForm()
-    const onSubmit = (data) => {
+    const { register, handleSubmit, reset } = useForm();
+    const axiosCommon = useAxiosCommon();
+    const axiosSecure = UseAxiosSecure();
+    const onSubmit = async (data) => {
         console.log(data)
+        //image upload to imgBB and get the url
+        const imgFile = { image: data.image[0], }
+        const res = await axiosCommon.post(image_hosting_api, imgFile, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+
+        })
+        console.log(res.data)
+        if (res.data.success) {
+            const menuItems = {
+                name: data.name,
+                category: data.category,
+                price: parseFloat(data.price),
+                recipe: data.recipe,
+                image: res.data.data.display_url
+
+            }
+
+            const menuRes = await axiosSecure.post('/menu', menuItems)
+            console.log(menuRes.data)
+            if (menuRes.data.insertedId) {
+                reset();
+                toast.success("Item added successfully");
+                
+            }
+        }
+
     }
     return (
         <div>
@@ -36,10 +72,11 @@ const AddItems = () => {
                             </label>
 
                             <select
+                                defaultValue={"default"}
                                 {...register('category', { required: true })}
 
                                 className="select select-bordered w-full">
-                                <option disabled selected>Select a category</option>
+                                <option disabled value={"default"}>Select a category</option>
                                 <option value="salad">salad</option>
                                 <option value="desert">desert</option>
                                 <option value="pizza">pizza</option>
