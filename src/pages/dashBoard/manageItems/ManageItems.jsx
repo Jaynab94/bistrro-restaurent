@@ -3,13 +3,15 @@ import SectionTitle from "../../../components/SectionTitle";
 import useMenu from "../../../hooks/UseMenu";
 import Swal from "sweetalert2";
 import UseAxiosSecure from "../../../hooks/UseAxiosSecure";
+import { Link } from "react-router-dom";
 
 
 const ManageItems = () => {
-    const [menu] = useMenu();
-    console.log(menu);
+    const [menu, loading, refetch] = useMenu();
+
+
     const axiosSecure = UseAxiosSecure();
-  
+
     //delete item
     const handleDeleteItem = (item) => {
         console.log(item)
@@ -23,8 +25,16 @@ const ManageItems = () => {
             confirmButtonText: "Yes, delete it!"
         }).then(async (result) => {
             if (result.isConfirmed) {
-                const res = await  axiosSecure.delete(`/menu/${item._id}`)
+                const res = await axiosSecure.delete(`/menu/${item._id}`)
                 console.log(res.data)
+                if (res.data.deletedCount) {
+                    refetch();
+                    Swal.fire({
+                        title: `${item.name} has been deleted.`,
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                }
 
 
             }
@@ -73,9 +83,9 @@ const ManageItems = () => {
 
                                     </td>
                                     <td>{item.price}</td>
-                                    <td>
+                                    <Link to={`/dashboard/updateItem/${item._id}`}>
                                         <button className="btn btn-ghost"><FaEdit className="text-2xl"></FaEdit></button>
-                                    </td>
+                                    </Link>
                                     <td>
                                         <button onClick={() => handleDeleteItem(item)} className="btn btn-ghost"><FaTrash className="text-2xl text-red-600"></FaTrash></button>
                                     </td>

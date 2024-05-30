@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import useCarts from "../../../hooks/useCarts";
 import Table from "../table/Table";
 
@@ -11,7 +12,11 @@ const Cart = () => {
             <div className="flex justify-evenly ">
                 <h1 className="text-4xl">items:{cart.length}</h1>
                 <h1 className="text-4xl">items:Total Price : ${totalPrice} </h1>
-                <button className="btn btn-secondary">pay</button>
+                {
+                    cart.length ? <Link to={'/dashboard/payment'}>  <button className="btn btn-secondary">pay</button></Link>
+                        :
+                        <button disabled className="btn btn-secondary">pay</button>
+                }
 
 
             </div>
