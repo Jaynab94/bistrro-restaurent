@@ -4,6 +4,7 @@ import UseAuth from "./UseAuth";
 
 const axiosSecure = axios.create({
 
+    // baseURL: 'https://bistro-server-kohl.vercel.app',
     baseURL: 'http://localhost:5000',
 })
 
@@ -32,7 +33,7 @@ const UseAxiosSecure = () => {
         return response;
         // Do something with response data
     }, async (error) => {
-        
+
         console.log('errror by interceptor', error);
 
         const status = error.response.status;

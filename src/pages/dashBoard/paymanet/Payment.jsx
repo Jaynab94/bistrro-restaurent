@@ -1,9 +1,20 @@
+import { loadStripe } from "@stripe/stripe-js";
+import SectionTitle from "../../../components/SectionTitle";
+import { Elements } from "@stripe/react-stripe-js";
+import Cheakout from "./Cheakout";
 
 
+const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_GATEWAY_PK);
 const Payment = () => {
     return (
         <div>
-            <h1>payment here</h1>
+            <SectionTitle heading={"PAYMENT"}></SectionTitle>
+            <div>
+                <Elements stripe={stripePromise}>
+                    <Cheakout></Cheakout>
+                </Elements>
+               
+            </div>
         </div>
     );
 };

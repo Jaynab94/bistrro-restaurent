@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 
-import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
+
 import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import toast from "react-hot-toast";
 import UseAuth from "../../hooks/UseAuth";
 import useAxiosCommon from "../../hooks/useAxiosCommon";
-import Swal from "sweetalert2";
+
 import SocialLogin from "../../components/socialLogin/SocialLogin";
 
 
@@ -22,7 +22,7 @@ const Register = () => {
     const {
         register,
         handleSubmit,
-        reset,
+      
 
         formState: { errors },
     } = useForm()
@@ -33,8 +33,10 @@ const Register = () => {
         createUser(data.email, data.password)
             .then(res => {
                 const user = res.user;
+                console.log(user)
                 updateUserProfile(data.name, data.photo)
                     .then(res => {
+                        console.log(res)
                         //add user info to database
                         const userInfo = {
                             name: data.name,
