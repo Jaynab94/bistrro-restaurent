@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import UseAxiosSecure from "../../../hooks/UseAxiosSecure";
 import useCarts from "../../../hooks/useCarts";
 import UseAuth from "../../../hooks/UseAuth";
+import toast from "react-hot-toast";
 
 
 const Cheakout = () => {
@@ -18,20 +19,22 @@ const Cheakout = () => {
     const axiosSecure = UseAxiosSecure();
 
 
-    const [cart] = useCarts();
+    const [cart, refetch] = useCarts();
     // console.log(cart)
     const totalPrice = cart?.reduce((total, item) => total + item.price, 0);
     // console.log(totalPrice)
 
 
     useEffect(() => {
-        axiosSecure.post('/create_payment_intent', { price: totalPrice })
-            .then(res => {
-                // console.log(res.data);
-                console.log(res.data.client_secret);
-                setClientSecret(res.data.client_secret);
+        if (totalPrice > 0) {
+            axiosSecure.post('/create_payment_intent', { price: totalPrice })
+                .then(res => {
+                    // console.log(res.data);
+                    console.log(res.data.client_secret);
+                    setClientSecret(res.data.client_secret);
 
-            })
+                })
+        }
 
         //confirm payment intent
 
@@ -98,6 +101,25 @@ const Cheakout = () => {
             console.log('paymentIntent', paymentIntent)
             if (paymentIntent.status === 'succeeded') {
                 setTrasactionId(paymentIntent.id)
+
+                //now send the trasaction id to the server
+                const paymentInfo = {
+                    gmail: user.email,
+                    price: totalPrice,
+                    date: new Date(),
+                    trasactionId: paymentIntent.id,
+                    cartIds: cart.map(item => item._id),
+                    menuIds: cart.map(item => item.menuId),
+                    status: 'pending',
+
+                }
+
+                const res = await axiosSecure.post('/payments', paymentInfo);
+                console.log('payment success', res.data.result);
+                if (res.data.result.insertedId) {
+                    toast.success("Payment Successfull")
+                }
+                refetch();  //refetch the carts
 
             }
         }

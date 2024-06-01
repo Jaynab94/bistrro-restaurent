@@ -19,6 +19,7 @@ import AdminRoutes from "./AdminRoutes";
 import ManageItems from "../pages/dashBoard/manageItems/ManageItems";
 import UpdateItem from "../pages/dashBoard/updateitems/UpdateItem";
 import Payment from "../pages/dashBoard/paymanet/Payment";
+import PaymentHistory from "../pages/dashBoard/PaymentHistory/PaymentHistory";
 
 
 
@@ -68,6 +69,10 @@ export const router = createBrowserRouter([
                 element:<Payment></Payment>
 
             },
+            {
+                path:'paymentHistory',
+                element:<PaymentHistory></PaymentHistory>
+            },
 
             // admin routes
             {
@@ -85,7 +90,7 @@ export const router = createBrowserRouter([
             {
                 path: 'updateItem/:id',
                 element: <AdminRoutes> <UpdateItem></UpdateItem></AdminRoutes>,
-                loader: ({ params }) => fetch(`https://bistro-server-kohl.vercel.app/menu/${params.id}`)
+                loader: ({ params }) => fetch(`http://localhost:5000/menu/${params.id}`)
 
             }
         ]

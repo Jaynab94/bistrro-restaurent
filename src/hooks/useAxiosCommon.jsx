@@ -2,7 +2,7 @@ import axios from "axios";
 
 const axiosCommon = axios.create({
 
-    baseURL: 'https://bistro-server-kohl.vercel.app',
+    baseURL: 'http://localhost:5000',
 })
 
 
