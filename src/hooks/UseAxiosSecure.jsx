@@ -4,8 +4,8 @@ import UseAuth from "./UseAuth";
 
 const axiosSecure = axios.create({
 
-    // baseURL: 'http://localhost:5000',
-    baseURL: 'http://localhost:5000',
+    // baseURL: 'https://bistro-server-kohl.vercel.app',
+    baseURL: 'https://bistro-server-kohl.vercel.app',
 })
 
 
@@ -41,7 +41,7 @@ const UseAxiosSecure = () => {
         //for 401 and 404 user log out and redirect to login page
         if (status === 401 || status === 403) {
             await logoutUser();
-            navigate('/login', { replace: true })
+            // navigate('/login', { replace: true })
         }
 
         return Promise.reject(error);

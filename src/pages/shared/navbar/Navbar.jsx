@@ -4,8 +4,10 @@ import toast from "react-hot-toast";
 import { FaCartPlus } from "react-icons/fa";
 import UseAuth from "../../../hooks/UseAuth";
 import useCarts from "../../../hooks/useCarts";
+import useAdmin from "../../../hooks/useAdmin";
 
 const Navbar = () => {
+    const [isAdmin] = useAdmin();
     const [cart] = useCarts();
     // console.log(cart)
     const { user, logoutUser } = UseAuth();
@@ -28,10 +30,22 @@ const Navbar = () => {
 
         <NavLink to={'/'}><li><a href="">Home</a></li></NavLink>
         <NavLink><li><a href="">CONTACT us</a></li></NavLink>
-        <NavLink><li><a href="">DASHBOARD</a></li></NavLink>
+      
         <NavLink to={'/menu'}><li><a href="">Our Menu</a></li></NavLink>
         <NavLink to={'/shop/salad'}><li><a href="">Our Shop</a></li></NavLink>
-        <NavLink to={'/secret'}><li><a href="">secret</a></li></NavLink>
+     
+
+        {
+            user && isAdmin && <li>< NavLink to={'/dashboard/adminHome'}>Admin DashBoard</NavLink></li>
+        }
+
+        {
+            user && !isAdmin && <li>< NavLink to={'/dashboard/UserHome'}>User Home</NavLink></li>
+        }
+
+
+
+
         <NavLink to='/dashboard/cart'><li><a href="">
             <button className="btn">
                 <FaCartPlus className="text-2xl" />

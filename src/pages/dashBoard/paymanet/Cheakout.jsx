@@ -4,6 +4,7 @@ import UseAxiosSecure from "../../../hooks/UseAxiosSecure";
 import useCarts from "../../../hooks/useCarts";
 import UseAuth from "../../../hooks/UseAuth";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 
 const Cheakout = () => {
@@ -17,6 +18,7 @@ const Cheakout = () => {
     const stripe = useStripe();
     const elements = useElements();
     const axiosSecure = UseAxiosSecure();
+    const navigate = useNavigate();
 
 
     const [cart, refetch] = useCarts();
@@ -104,7 +106,7 @@ const Cheakout = () => {
 
                 //now send the trasaction id to the server
                 const paymentInfo = {
-                    gmail: user.email,
+                    email: user.email,
                     price: totalPrice,
                     date: new Date(),
                     trasactionId: paymentIntent.id,
@@ -119,7 +121,9 @@ const Cheakout = () => {
                 if (res.data.result.insertedId) {
                     toast.success("Payment Successfull")
                 }
-                refetch();  //refetch the carts
+
+                refetch(); 
+                navigate('/dashboard/paymentHistory') //refetch the carts
 
             }
         }

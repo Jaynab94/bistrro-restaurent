@@ -20,6 +20,8 @@ import ManageItems from "../pages/dashBoard/manageItems/ManageItems";
 import UpdateItem from "../pages/dashBoard/updateitems/UpdateItem";
 import Payment from "../pages/dashBoard/paymanet/Payment";
 import PaymentHistory from "../pages/dashBoard/PaymentHistory/PaymentHistory";
+import AdminHome from "../pages/dashBoard/adminHome/AdminHome";
+import UserHome from "../pages/dashBoard/userHome/UserHome";
 
 
 
@@ -65,16 +67,25 @@ export const router = createBrowserRouter([
                 element: <Cart></Cart>
             },
             {
-                path:'payment',
-                element:<Payment></Payment>
+                path: 'payment',
+                element: <Payment></Payment>
 
             },
             {
-                path:'paymentHistory',
-                element:<PaymentHistory></PaymentHistory>
+                path: 'paymentHistory',
+                element: <PaymentHistory></PaymentHistory>
+            },
+            {
+                path: 'UserHome',
+                element: <UserHome></UserHome>
             },
 
             // admin routes
+
+            {
+                path: 'adminHome',
+                element: <AdminRoutes><AdminHome></AdminHome></AdminRoutes>
+            },
             {
                 path: 'allUsers',
                 element: <AdminRoutes><AllUsers></AllUsers></AdminRoutes>
@@ -90,7 +101,7 @@ export const router = createBrowserRouter([
             {
                 path: 'updateItem/:id',
                 element: <AdminRoutes> <UpdateItem></UpdateItem></AdminRoutes>,
-                loader: ({ params }) => fetch(`http://localhost:5000/menu/${params.id}`)
+                loader: ({ params }) => fetch(`https://bistro-server-kohl.vercel.app/menu/${params.id}`)
 
             }
         ]
